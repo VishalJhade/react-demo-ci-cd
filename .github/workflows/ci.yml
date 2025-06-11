@@ -1,4 +1,4 @@
-name: "React workflow"
+name: "React CI workflow"
 on: 
     push:
 
@@ -26,4 +26,21 @@ jobs:
 
             - name: "list directories"
               run: ls
+            
+            - name: "Run lint"
+              run: npm run lint
+
+            - name: "Run test"
+              run: npm test
+
+            - name: "Run Build"
+              run: npm build
+
+            - name: "Upload product ready-build files"
+              uses: actions/upload-artifact@v4
+              with:
+                name: build
+                path: dist  
+ 
+              
 
