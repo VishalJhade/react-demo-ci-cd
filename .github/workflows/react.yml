@@ -10,13 +10,13 @@ jobs:
             - name: "setup nodejs"
               uses: actions/setup-node@v4
               with:
-               node-version: '21'
+                node-version: '21'
 
             - name: "check node version"
               run: node -v
             
             - name: "Clone the reporetory"
-              uses: action/checkout@v2
+              uses: actions/checkout@v4
 
             - name: "install dependencies"
               run: npm install
