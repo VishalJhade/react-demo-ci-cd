@@ -2,7 +2,7 @@ name: "CD Pipeline"
 
 on:
   workflow_run:
-    workflows: ["Sample React CI Pipeline / Workflow"]  # Match this exactly
+    workflows: ["Sample React CI Pipeline / Workflow"]  # Make sure this matches exactly
     types:
       - completed
   workflow_dispatch:
@@ -10,31 +10,40 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: production
     permissions:
       actions: read
       contents: read
 
     steps:
-      - name: "Setup nodejs"
-        uses: actions/setup-node@v4
-        with:
-          node-version: '21'
+      - name: "Get artifact ID from CI workflow"
+        id: get_artifact
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ARTIFACT_ID=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.event.workflow_run.id }}/artifacts" \
+            | jq -r '.artifacts[] | select(.name=="build") | .id')
 
-      - name: "Setup vercel cli"
-        run: npm install -g vercel
+          if [ -z "$ARTIFACT_ID" ]; then
+            echo "No artifact named 'build' found!"
+            exit 1
+          fi
 
-      - name: "Wait before download"
-        run: sleep 10
+          echo "ARTIFACT_ID=$ARTIFACT_ID" >> $GITHUB_OUTPUT
 
-      - name: "Download build files"
-        uses: actions/download-artifact@v4
-        with:
-          name: build
-          run-id: ${{ github.event.workflow_run.id }}
+      - name: "Download artifact ZIP"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          curl -L -H "Authorization: token $GITHUB_TOKEN" \
+            -o build.zip \
+            "https://api.github.com/repos/${{ github.repository }}/actions/artifacts/${{ steps.get_artifact.outputs.ARTIFACT_ID }}/zip"
 
-      - name: "Check downloaded files"
-        run: ls -R
+      - name: "Extract artifact"
+        run: unzip build.zip -d build
 
-      - name: "Deploy to vercel"
-        run: vercel --prod --token=${{ secrets.VERCEL_TOKEN }} --confirm --name=cicdproject
+      - name: "List extracted files"
+        run: ls -R build
+
+      - name: "Display content of file"
+        run: cat build/test/file.txt  # 🔁 Adjust the path to match your file location
