@@ -13,6 +13,11 @@ jobs:
 
 
     steps:
+      - name: "Setup nodejs"
+        uses: actions/setup-node@v4
+        with:
+            node-version: '21'
+            
       - name: "Download build files"
         uses: actions/download-artifact@v4
         with:
@@ -20,11 +25,11 @@ jobs:
           run-id: ${{ github.event.workflow_run.id }}
           github-token: ${{ github.token }}
                 
-      - name: "Extract artifact"
-        run: unzip build.zip -d build
-
       - name: "List extracted files"
         run: ls -R build
+
+      - name: "Extract artifact"
+        run: unzip build.zip -d build
 
       - name: "Display index.html"
         run: cat build/index.html
