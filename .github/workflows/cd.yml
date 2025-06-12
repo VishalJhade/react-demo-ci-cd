@@ -26,7 +26,7 @@ jobs:
           github-token: ${{ github.token }}
 
       - name: "Extract artifact"
-        run: unzip dist.zip -d build
+        run: unzip build.zip -d build
 
       - name: "Display index.html"
         run: cat dist/index.html
