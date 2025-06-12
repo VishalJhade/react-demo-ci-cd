@@ -24,10 +24,3 @@ jobs:
           name: build
           run-id: ${{ github.event.workflow_run.id }}
           github-token: ${{ github.token }}
-
-      - name: "Extract artifact"
-        run: unzip build.zip -d build
-
-      - name: "Display index.html"
-        run: cat dist/index.html
-
