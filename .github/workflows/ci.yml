@@ -41,6 +41,10 @@ jobs:
               with:
                 name: build
                 path: dist  
+
+            - name: "Check build output"
+              run: ls -R dist
+
  
               
 
