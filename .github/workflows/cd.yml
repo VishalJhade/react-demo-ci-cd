@@ -45,5 +45,5 @@ jobs:
       - name: "List extracted files"
         run: ls -R build
 
-      - name: "Display content of file"
-        run: cat build/test/file.txt  # 🔁 Adjust the path to match your file location
+      - name: "Display content of index.html"
+        run: cat build/dist/index.html
