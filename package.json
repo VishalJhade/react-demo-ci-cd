@@ -8,17 +8,19 @@
     "build": "vite build",
     "test": "vitest",
     "test:watch": "vitest --watch",
-    "lint": "eslint . --config eslint.config.js",
+    "lint": "eslint src --config eslint.config.js",
     "preview": "vite preview"
   },
   "vitest": {
     "environment": "jsdom"
-},
+  },
   "dependencies": {
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "^7.27.5",
+    "@babel/preset-react": "^7.27.1",
     "@eslint/js": "^9.25.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
@@ -35,4 +37,3 @@
     "vitest": "^3.2.3"
   }
 }
-
