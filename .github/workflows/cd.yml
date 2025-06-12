@@ -26,11 +26,11 @@ jobs:
           github-token: ${{ github.token }}
                 
       - name: "List extracted files"
-        run: ls -R build
+        run: ls -R dist
 
       - name: "Extract artifact"
-        run: unzip build.zip -d build
+        run: unzip dist.zip -d build
 
       - name: "Display index.html"
-        run: cat build/index.html
+        run: cat dist/index.html
 
