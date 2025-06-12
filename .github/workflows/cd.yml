@@ -24,9 +24,6 @@ jobs:
           name: build
           run-id: ${{ github.event.workflow_run.id }}
           github-token: ${{ github.token }}
-                
-      - name: "List extracted files"
-        run: ls -R dist
 
       - name: "Extract artifact"
         run: unzip dist.zip -d build
